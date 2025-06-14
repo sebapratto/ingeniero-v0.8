@@ -16,7 +16,7 @@ android {
         versionCode = 1
         versionName = "0.1"
 
-        val versionBuild = 0
+        val versionBuild = 1
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
