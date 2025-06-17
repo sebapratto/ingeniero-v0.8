@@ -16,7 +16,7 @@
     * ciudad
     * codigo de país *(título)*
     * coordenadas *(subtítulo)*
-    * boton de favorito *(marca7desmarca)*
+    * boton de favorito *(marca/desmarca)*
     * accion de la card: navegar en el mapa y sus coordenadas
     * boton de navegación a pantalla descriptiva de la ciudad
 * Pantalla informativa de ciudad
