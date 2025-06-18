@@ -2,6 +2,7 @@ package ar.com.mychallenge.presentation.city.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ar.com.mychallenge.data.local.SharedPreferencesManager
 import ar.com.mychallenge.data.model.City
 import ar.com.mychallenge.data.repository.CityRepository
 import ar.com.mychallenge.data.util.ResultType
@@ -16,12 +17,24 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class CityViewModel(
-    private val cityRepository: CityRepository
+    private val cityRepository: CityRepository,
+    private val sharedPreferencesManager: SharedPreferencesManager,
 ) : ViewModel() {
 
     private val _allCities = MutableStateFlow<ResultType<List<City>>>(ResultType.Loading)
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+
+    val cityMap: MutableStateFlow<City?> = MutableStateFlow(null)
+    val citiesFavorites: MutableStateFlow<List<City>> = MutableStateFlow(emptyList())
+
+    init {
+        loadCities()
+    }
+
+    fun setCityMap(city: City) {
+        cityMap.value = city
+    }
 
     val citiesState: StateFlow<ResultType<List<City>>> =
         combine(_allCities, _searchQuery.debounce(300).distinctUntilChanged()) { citiesResult, query ->
@@ -31,9 +44,8 @@ class CityViewModel(
                         citiesResult
                     } else {
                         val filteredCities = citiesResult.data.filter { city ->
-                            city.name.contains(query, ignoreCase = true) ||
-                                    city.country.contains(query, ignoreCase = true)
-                        }
+                            city.name.startsWith(query, ignoreCase = true)
+                        }.sortedWith(compareBy( { it.name.lowercase() }, { it.country.lowercase() }))
                         ResultType.Success(filteredCities)
                     }
                 }
@@ -46,16 +58,29 @@ class CityViewModel(
             initialValue = ResultType.Loading
         )
 
-    init {
-        loadCities()
-    }
-
     fun loadCities() {
         viewModelScope.launch {
             cityRepository.getCities().collect { result ->
                 _allCities.value = result
             }
         }
+        viewModelScope.launch {
+            citiesFavorites.value = sharedPreferencesManager.getCities()
+        }
+    }
+
+    fun onFavorites(city: City): Boolean {
+        var action = false
+        val favoriteList = citiesFavorites.value.toMutableList()
+        if (!favoriteList.any {it.id == city.id}){
+            favoriteList.add(city)
+            action = true
+        } else {
+            favoriteList.remove(city)
+        }
+        citiesFavorites.value = favoriteList
+        sharedPreferencesManager.saveCities(favoriteList)
+        return  action
     }
 
     fun onSearchQueryChanged(query: String) {
