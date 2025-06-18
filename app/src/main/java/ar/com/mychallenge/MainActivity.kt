@@ -17,8 +17,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MyChallengeTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            MyChallengeTheme(dynamicColor = false) {
+                Scaffold(modifier = Modifier.fillMaxSize()) { _ ->
                     Surface(
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colorScheme.background

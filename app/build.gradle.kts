@@ -16,7 +16,7 @@ android {
         versionCode = 1
         versionName = "0.1"
 
-        val versionBuild = 3
+        val versionBuild = 4
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -68,4 +68,10 @@ dependencies {
 
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.navigation.compose)
+
+    implementation(libs.maps.compose)
+    implementation(libs.play.services.maps)
+
+    implementation(libs.androidx.material.icons.core)
+    implementation(libs.androidx.material.icons.extended)
 }

@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">MyChallenge</string>
+    <string name="title_list_app">Ciudades by Ingeniero v0.8</string>
+    <string name="search_city">Ingresa tu busqueda..</string>
+    <string name="select_map">Selecciona el mapa de la lista</string>
+    <string name="not_found">No se encontraron ciudades</string>
+    <string name="search_not_found">Sin resultados para \"%1$s\"</string>
+    <string name="retry">Reintentar</string>
+    <string name="error">Error: %1$s</string>
+    <string name="country">País: %1$s</string>
+    <string name="title_coord">Ubicación:</string>
+    <string name="longitud"><![CDATA[--> Longitud: %1$s]]></string>
+    <string name="latitud"><![CDATA[--> Latitud: %1$s]]></string>
 </resources>
