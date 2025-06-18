@@ -15,6 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyChallenge"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyC06itM0VMTxUPLLCSbzO-wIu9Y_kjFJU0" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
