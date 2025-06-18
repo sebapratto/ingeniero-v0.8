@@ -16,23 +16,10 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import java.util.Locale
 
-class CityApiService {
-
-    private val client = HttpClient(Android) {
-        install(ContentNegotiation) {
-            json(Json {
-                prettyPrint = true
-                ignoreUnknownKeys = true
-                isLenient = true
-            })
-        }
-    }
-
-    private val jsonSerializer = Json {
-        ignoreUnknownKeys = true
-        isLenient = false
-    }
-
+class CityApiService(
+    private val client: HttpClient,
+    private val jsonSerializer: Json,
+) {
 
     suspend fun getCities() = downloadAndParseCitiesDirectly(PATH)
 
@@ -53,10 +40,10 @@ class CityApiService {
                     }
                     ResultType.Success(cities)
                 } else {
-                    ResultType.Error(message = "Error when downloading/parser ${response.status}")
+                    ResultType.Error(message = "Error en la descarga ${response.status}")
                 }
             }.getOrElse {
-                ResultType.Error(message = "Error when downloading/parser")
+                ResultType.Error(message = "Error en la descarga")
             }
         }
     }
